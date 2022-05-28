@@ -8,18 +8,18 @@ import io.socket.client.*;
 import java.net.URI;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.List;
 
 public class SocketMethods {
 
-    private URI url = URI.create("http://192.168.1.27:3000");
+    private final URI url = URI.create("https://chatbasicjava.herokuapp.com/");
     private final IO.Options options = IO.Options.builder().build();
-    private Socket socket;
-    private ObjectMapper mapper = new ObjectMapper();
+    private final Socket socket;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public SocketMethods() {
         this.mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
+        this.mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        
         this.socket = IO.socket(url, options);
 
         // Connect the socket
@@ -40,10 +40,10 @@ public class SocketMethods {
 
     }
 
-    public Socket listen(){
+    public Socket listen() {
         return socket;
     }
-    
+
     public <T> T convertToJson(String json, TypeReference<T> reference) {
         try {
             return this.mapper.readValue(json, reference);

@@ -3,15 +3,13 @@ package screens;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.List;
 import javax.swing.JOptionPane;
-import org.json.JSONException;
-import org.json.JSONObject;
 import utils.ModelMessage;
 import utils.SocketMethods;
 
 public class frmMainScreen extends javax.swing.JFrame {
 
-    private final SocketMethods socket = new SocketMethods();
-    private final String name;
+    private SocketMethods socket = new SocketMethods();
+    private String name;
 
     public frmMainScreen(String name) {
         this.name = name;
@@ -50,7 +48,7 @@ public class frmMainScreen extends javax.swing.JFrame {
 
         if (num <= 50) {
             for (int i = 0; i < num; ++i) {
-                    socket.sendEvent(this.name, mensaje);
+                socket.sendEvent(this.name, mensaje);
             }
         } else {
             JOptionPane.showMessageDialog(null, "Excedio el numero maximo de repeticion que se pueden realizar - Maxiomo 50");
@@ -249,7 +247,7 @@ public class frmMainScreen extends javax.swing.JFrame {
 
                         for (int i = 0; i < arrMsg.length; ++i) {
                             if (arrMsg[i].equals(":") && arrMsg[i + 1].equals(")")) {
-                                ctn += "😀"; 
+                                ctn += "😀";
                             } else if (arrMsg[i].equals(":") && arrMsg[i + 1].equals("(")) {
                                 ctn += "😞";
                             } else if (!arrMsg[i].contains("(") && !arrMsg[i].contains(")")) {
@@ -318,19 +316,7 @@ public class frmMainScreen extends javax.swing.JFrame {
         }
 
         java.awt.EventQueue.invokeLater(() -> {
-
-            String name = JOptionPane.showInputDialog("Ingrese su Nombre");
-            String condicion = frmMainScreen.validatorName(name);
-            frmMainScreen view = new frmMainScreen(name);
-
-            if (condicion.equals("")) {
-                view.setVisible(true);
-                view.setResizable(false);
-                view.setLocationRelativeTo(null);
-            } else {
-                JOptionPane.showMessageDialog(null, condicion, "WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
-                main(args);
-            }
+            new frmMainScreen("defualt").setVisible(true);
 
         });
     }
